@@ -1,63 +1,70 @@
 
 //  Lista do rank
 
-const listRank = [
-    { name: `Ferro` },
-    { name: `Bronze` },
-    { name: `Prata` },
-    { name: `Ouro` },
-    { name: `Platina` },
-    { name: `Ascendente` },
-    { name: `Imortal` },
-    { name: `Radiante` }
-]
+const ranks = [
+    { name: `Ferro`, xp: 0, wins: 0 },
+    { name: `Bronze`, xp: 1000, wins: 10 },
+    { name: `Prata`, xp: 2000, wins: 20 },
+    { name: `Ouro`, xp: 5000, wins: 50 },
+    { name: `Platina`, xp: 7000, wins: 80 },
+    { name: `Ascendente`, xp: 8000, wins: 90 },
+    { name: `Imortal`, xp: 9000, wins: 100 },
+    { name: `Radiante`, xp: 10000, wins: 200 }
+];
 
+
+//Função para verificar o rank do competitivo
+
+function requirementsCompetitive(victories) {
+    let currentRankCompetitive = ranks[0];
+    for (let i = 0; i < ranks.length; i++) {
+        if (victories >= ranks[i].wins) {
+            currentRankCompetitive = ranks[i].name;
+        }
+    }
+    return currentRankCompetitive;
+};
 
 //Função para verificar o rank
 
-
-function requirementsRank(amountOfXp) {
-
-    if (amountOfXp <= 1000) {
-        return listRank[0];
-    } else if (amountOfXp <= 2000) {
-        return listRank[1];
-    } else if (amountOfXp <= 5000) {
-        return listRank[2];
-    } else if (amountOfXp <= 7000) {
-        return listRank[3];
-    } else if (amountOfXp <= 8000) {
-        return listRank[4];
-    } else if (amountOfXp <= 9000) {
-        return listRank[5];
-    } else if (amountOfXp <= 10000) {
-        return listRank[6];
-    } else if (amountOfXp > 10000) {
-        return listRank[7];
+function getXpRank(xp) {
+    let currentRank = ranks[0];
+    for (let i = 0; i < ranks.length; i++) {
+        if (xp >= ranks[i].xp) {
+            currentRank = ranks[i].name;
+        }
     }
+    return currentRank;
+};
 
-}
+
 
 // Construtor de herois 
 
-class HeroesBox {
-    constructor(name, xp = 0) {
+class Heroes {
+    constructor(name, xp = 0, victories = 0) {
         this.name = name;
         this.xp = xp;
-        this.rank = requirementsRank(xp);
-
-
-
-
-    } speakRank() {
-        console.log(`O Herói de nome ${this.name} está no nível de ${this.rank.name}`);
+        this.victories = victories;
+        this.rank = getXpRank(xp);
+        this.rankCompetitive = requirementsCompetitive(victories);
     }
+
+    speakRank() {
+        console.log(`O Herói de nome ${this.name} está no nível de ${this.rank}`);
+    };
+    speakRankCompetitive() {
+        console.log(`O Herói tem ${this.victories} vitórias e está no nível competitivo: ${this.rankCompetitive}`);
+    }
+
 
 };
 
 // criando um heroi
 
-const hero1 = new HeroesBox("Lua", 7500);
+const hero1 = new Heroes("Lua", 7500, 30);
 
-console.log(hero1);
-hero1.speakRank();
+console.log(hero1); // Mostra o herois com todas as caracteristicas
+hero1.speakRank(); // Fala o rank pelo xp 
+hero1.speakRankCompetitive() // Fala o rank pela quantidade de vitorias
+
